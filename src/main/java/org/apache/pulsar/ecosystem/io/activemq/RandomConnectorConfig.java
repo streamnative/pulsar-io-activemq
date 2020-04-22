@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.apache.pulsar.ecosystem.io.random;
+package org.apache.pulsar.ecosystem.io.activemq;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

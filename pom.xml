@@ -31,10 +31,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.apache.pulsar.ecosystem</groupId>
-  <artifactId>pulsar-io-template</artifactId>
+  <artifactId>pulsar-io-activemq</artifactId>
   <version>0.0.1</version>
-  <name>Pulsar Ecosystem :: IO Connector :: Template Project</name>
-  <description>It is a project template for developing an Apache Pulsar connector</description>
+  <name>Pulsar Ecosystem :: IO Connector :: ActiveMQ Connector</name>
+  <description>ActiveMQ source connector and ActiveMQ sink connector.</description>
 
   <properties>
     <java.version>1.8</java.version>
@@ -63,6 +63,8 @@
     <nifi.nar.plugin.version>1.2.0</nifi.nar.plugin.version>
     <puppycrawl.checkstyle.version>6.19</puppycrawl.checkstyle.version>
     <spotbugs-maven-plugin.version>3.1.8</spotbugs-maven-plugin.version>
+
+    <activemq.verion>5.15.12</activemq.verion>
   </properties>
 
   <licenses>
@@ -127,6 +129,12 @@
 
   <!-- include the dependencies -->
   <dependencies>
+
+      <dependency>
+          <groupId>org.apache.activemq</groupId>
+          <artifactId>activemq-client</artifactId>
+          <version>${activemq.verion}</version>
+      </dependency>
 
     <!-- provided dependencies (available at compilation and test classpaths and *NOT* packaged) -->
     <dependency>
