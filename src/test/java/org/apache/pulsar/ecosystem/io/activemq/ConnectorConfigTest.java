@@ -19,8 +19,6 @@
 package org.apache.pulsar.ecosystem.io.activemq;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 import org.apache.activemq.command.ActiveMQBytesMessage;
 import org.apache.activemq.command.ActiveMQTextMessage;
 import org.junit.Assert;
@@ -29,73 +27,51 @@ import org.junit.Test;
 /**
  * connector config test.
  */
-public class ConnectorConfigTest {
-
-    public Map<String, Object> getBasicConfig() {
-        Map<String, Object> configMap = new HashMap<>();
-        configMap.put("protocol", "tcp");
-        configMap.put("host", "localhost");
-        configMap.put("port", "61616");
-        configMap.put("username", "admin");
-        configMap.put("password", "admin");
-        return configMap;
-    }
+public class ConnectorConfigTest extends ActiveMQConnectorTestBase {
 
     @Test
     public void loadBasicConfigTest() throws IOException {
-        Map<String, Object> configMap = getBasicConfig();
-        configMap.put("queueName", "user-op-queue");
+        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(queueConfig);
+        activeMQConnectorConfig.validate();
 
-        ActiveMQConfig activeMQConfig = ActiveMQConfig.load(configMap);
-        activeMQConfig.validate();
-
-        Assert.assertEquals("tcp", activeMQConfig.getProtocol());
-        Assert.assertEquals("localhost", activeMQConfig.getHost());
-        Assert.assertEquals("61616", activeMQConfig.getPort());
-        Assert.assertEquals("tcp://localhost:61616", activeMQConfig.getBrokerUrl());
-        Assert.assertEquals("admin", activeMQConfig.getUsername());
-        Assert.assertEquals("admin", activeMQConfig.getPassword());
+        Assert.assertEquals("tcp", activeMQConnectorConfig.getProtocol());
+        Assert.assertEquals("localhost", activeMQConnectorConfig.getHost());
+        Assert.assertEquals("61616", activeMQConnectorConfig.getPort());
+        Assert.assertEquals("tcp://localhost:61616", activeMQConnectorConfig.getBrokerUrl());
+        Assert.assertEquals("admin", activeMQConnectorConfig.getUsername());
+        Assert.assertEquals("admin", activeMQConnectorConfig.getPassword());
     }
 
     @Test
     public void loadQueueConfigTest() throws IOException {
-        Map<String, Object> configMap = getBasicConfig();
-        configMap.put("queueName", "user-op-queue");
+        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(queueConfig);
+        activeMQConnectorConfig.validate();
 
-        ActiveMQConfig activeMQConfig = ActiveMQConfig.load(configMap);
-        activeMQConfig.validate();
-
-        Assert.assertEquals("user-op-queue", activeMQConfig.getQueueName());
-        Assert.assertNull(activeMQConfig.getTopicName());
+        Assert.assertEquals("test-queue", activeMQConnectorConfig.getQueueName());
+        Assert.assertNull(activeMQConnectorConfig.getTopicName());
     }
 
     @Test
     public void loadTopicConfigTest() throws IOException {
-        Map<String, Object> configMap = getBasicConfig();
-        configMap.put("topicName", "user-op-topic");
+        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(topicConfig);
+        activeMQConnectorConfig.validate();
 
-        ActiveMQConfig activeMQConfig = ActiveMQConfig.load(configMap);
-        activeMQConfig.validate();
-
-        Assert.assertEquals("user-op-topic", activeMQConfig.getTopicName());
-        Assert.assertNull(activeMQConfig.getQueueName());
+        Assert.assertEquals("test-topic", activeMQConnectorConfig.getTopicName());
+        Assert.assertNull(activeMQConnectorConfig.getQueueName());
     }
 
     @Test
     public void loadMessageTypeConfig() throws IOException {
-        Map<String, Object> configMap = getBasicConfig();
-        configMap.put("topicName", "user-op-topic");
+        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(topicConfig);
+        activeMQConnectorConfig.validate();
 
-        ActiveMQConfig activeMQConfig = ActiveMQConfig.load(configMap);
-        activeMQConfig.validate();
+        Assert.assertEquals(ActiveMQTextMessage.class.getSimpleName(), activeMQConnectorConfig.getActiveMessageType());
 
-        Assert.assertEquals(ActiveMQTextMessage.class.getSimpleName(), activeMQConfig.getActiveMessageType());
+        topicConfig.put("activeMessageType", ActiveMQBytesMessage.class.getSimpleName());
+        activeMQConnectorConfig = ActiveMQConnectorConfig.load(topicConfig);
+        activeMQConnectorConfig.validate();
 
-        configMap.put("activeMessageType", ActiveMQBytesMessage.class.getSimpleName());
-        activeMQConfig = ActiveMQConfig.load(configMap);
-        activeMQConfig.validate();
-
-        Assert.assertEquals(ActiveMQBytesMessage.class.getSimpleName(), activeMQConfig.getActiveMessageType());
+        Assert.assertEquals(ActiveMQBytesMessage.class.getSimpleName(), activeMQConnectorConfig.getActiveMessageType());
 
     }
 

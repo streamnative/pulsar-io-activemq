@@ -27,6 +27,7 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Session;
 import lombok.Data;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQMessage;
@@ -41,7 +42,8 @@ import org.apache.pulsar.io.core.SourceContext;
 @Slf4j
 public class ActiveMQSource extends PushSource<byte[]> {
 
-    private ActiveMQConfig activeMQConfig;
+    @Getter
+    private ActiveMQConnectorConfig config;
 
     private Connection connection;
 
@@ -51,18 +53,18 @@ public class ActiveMQSource extends PushSource<byte[]> {
 
     @Override
     public void open(Map<String, Object> map, SourceContext sourceContext) throws Exception {
-        if (null != activeMQConfig) {
+        if (null != config) {
             throw new IllegalStateException("Connector is already open");
         }
 
-        activeMQConfig = ActiveMQConfig.load(map);
-        activeMQConfig.validate();
+        config = ActiveMQConnectorConfig.load(map);
+        config.validate();
 
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(activeMQConfig.getBrokerUrl());
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(config.getBrokerUrl());
 
-        if (StringUtils.isNotEmpty(activeMQConfig.getUsername())
-                && StringUtils.isNotEmpty(activeMQConfig.getPassword())) {
-            connection = connectionFactory.createConnection(activeMQConfig.getUsername(), activeMQConfig.getPassword());
+        if (StringUtils.isNotEmpty(config.getUsername())
+                && StringUtils.isNotEmpty(config.getPassword())) {
+            connection = connectionFactory.createConnection(config.getUsername(), config.getPassword());
         } else {
             connection = connectionFactory.createConnection();
         }
@@ -71,10 +73,10 @@ public class ActiveMQSource extends PushSource<byte[]> {
         session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         Destination destination;
-        if (StringUtils.isNotEmpty(activeMQConfig.getQueueName())) {
-            destination = session.createQueue(activeMQConfig.getQueueName());
-        } else if (StringUtils.isNotEmpty(activeMQConfig.getTopicName())) {
-            destination = session.createTopic(activeMQConfig.getTopicName());
+        if (StringUtils.isNotEmpty(config.getQueueName())) {
+            destination = session.createQueue(config.getQueueName());
+        } else if (StringUtils.isNotEmpty(config.getTopicName())) {
+            destination = session.createTopic(config.getTopicName());
         } else {
             throw new Exception("destination is null.");
         }

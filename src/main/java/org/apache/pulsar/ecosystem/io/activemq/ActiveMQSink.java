@@ -38,7 +38,7 @@ import org.apache.pulsar.io.core.SinkContext;
 @Slf4j
 public class ActiveMQSink implements Sink<byte[]> {
 
-    private ActiveMQConfig activeMQConfig;
+    private ActiveMQConnectorConfig config;
 
     private Connection connection;
 
@@ -48,18 +48,18 @@ public class ActiveMQSink implements Sink<byte[]> {
 
     @Override
     public void open(Map<String, Object> map, SinkContext sinkContext) throws Exception {
-        if (null != activeMQConfig) {
+        if (null != config) {
             throw new IllegalStateException("Connector is already open");
         }
 
-        activeMQConfig = ActiveMQConfig.load(map);
-        activeMQConfig.validate();
+        config = ActiveMQConnectorConfig.load(map);
+        config.validate();
 
-        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(activeMQConfig.getBrokerUrl());
+        ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(config.getBrokerUrl());
 
-        if (StringUtils.isNotEmpty(activeMQConfig.getUsername())
-                && StringUtils.isNotEmpty(activeMQConfig.getPassword())) {
-            connection = connectionFactory.createConnection(activeMQConfig.getUsername(), activeMQConfig.getPassword());
+        if (StringUtils.isNotEmpty(config.getUsername())
+                && StringUtils.isNotEmpty(config.getPassword())) {
+            connection = connectionFactory.createConnection(config.getUsername(), config.getPassword());
         } else {
             connection = connectionFactory.createConnection();
         }
@@ -68,10 +68,10 @@ public class ActiveMQSink implements Sink<byte[]> {
         session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         Destination destination;
-        if (StringUtils.isNotEmpty(activeMQConfig.getQueueName())) {
-            destination = session.createQueue(activeMQConfig.getQueueName());
-        } else if (StringUtils.isNotEmpty(activeMQConfig.getTopicName())) {
-            destination = session.createTopic(activeMQConfig.getTopicName());
+        if (StringUtils.isNotEmpty(config.getQueueName())) {
+            destination = session.createQueue(config.getQueueName());
+        } else if (StringUtils.isNotEmpty(config.getTopicName())) {
+            destination = session.createTopic(config.getTopicName());
         } else {
             throw new Exception("destination is null.");
         }
@@ -83,7 +83,7 @@ public class ActiveMQSink implements Sink<byte[]> {
     public void write(Record<byte[]> record) throws Exception {
         try {
             ActiveMQMessage activeMQMessage;
-            if (activeMQConfig.getActiveMessageType().equals(ActiveMQTextMessage.class.getSimpleName())) {
+            if (config.getActiveMessageType().equals(ActiveMQTextMessage.class.getSimpleName())) {
                 activeMQMessage = new ActiveMQTextMessage();
                 ((ActiveMQTextMessage) activeMQMessage).setText(new String(record.getValue()));
             } else {
@@ -110,4 +110,9 @@ public class ActiveMQSink implements Sink<byte[]> {
             connection.close();
         }
     }
+
+    public ActiveMQConnectorConfig getConfig() {
+        return this.config;
+    }
+
 }

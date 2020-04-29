@@ -25,18 +25,20 @@ import javax.jms.JMSException;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
+
+import lombok.Cleanup;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQTextMessage;
 
 /**
- * simple demo.
+ * Simple ActiveMQ Demo.
  */
-public class SimpleDemo {
+public class ActiveMQDemo {
 
     public static void main(String[] args) throws JMSException, InterruptedException {
-        SimpleDemo simpleDemo = new SimpleDemo();
-        simpleDemo.sendMessage();
-        simpleDemo.receiveMessage();
+        ActiveMQDemo demo = new ActiveMQDemo();
+        demo.sendMessage();
+        demo.receiveMessage();
     }
 
     private void sendMessage() throws JMSException {
@@ -45,16 +47,19 @@ public class SimpleDemo {
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 
         // Create a connection
+        @Cleanup
         Connection connection = connectionFactory.createConnection();
         connection.start();
 
         // Create a session
+        @Cleanup
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
         // Create a destination (Topic or Queue)
         Destination destination = session.createQueue("user-op-queue");
 
         // Create a MessageProducer from the Session to the Topic or Queue
+        @Cleanup
         MessageProducer producer = session.createProducer(destination);
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
@@ -67,23 +72,22 @@ public class SimpleDemo {
             // Tell the producer to send the message
             producer.send(message);
         }
-
-        producer.close();
-        session.close();
-        connection.close();
     }
 
     private void receiveMessage() throws JMSException, InterruptedException {
 
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 
+        @Cleanup
         Connection connection = connectionFactory.createConnection();
         connection.start();
 
+        @Cleanup
         Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 
         Destination destination = session.createQueue("user-op-queue-pulsar");
 
+        @Cleanup
         MessageConsumer consumer = session.createConsumer(destination);
 
         while (true) {
@@ -93,10 +97,6 @@ public class SimpleDemo {
 
             message.acknowledge();
         }
-
-//        consumer.close();
-//        session.close();
-//        connection.close();
     }
 
 }

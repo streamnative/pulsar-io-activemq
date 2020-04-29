@@ -23,6 +23,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
+import java.util.Objects;
+
 import lombok.Data;
 import org.apache.activemq.command.ActiveMQTextMessage;
 
@@ -30,7 +32,7 @@ import org.apache.activemq.command.ActiveMQTextMessage;
  * ActiveMQ config.
  */
 @Data
-public class ActiveMQConfig implements Serializable {
+public class ActiveMQConnectorConfig implements Serializable {
 
     private String protocol;
 
@@ -48,19 +50,24 @@ public class ActiveMQConfig implements Serializable {
 
     private String activeMessageType = ActiveMQTextMessage.class.getSimpleName();
 
-    public static ActiveMQConfig load(Map<String, Object> map) throws IOException {
+    public static ActiveMQConnectorConfig load(Map<String, Object> map) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new ObjectMapper().writeValueAsString(map), ActiveMQConfig.class);
+        return mapper.readValue(new ObjectMapper().writeValueAsString(map), ActiveMQConnectorConfig.class);
     }
 
     public void validate() {
-//        Preconditions.checkNotNull(protocol, "protocol property not set.");
-//        Preconditions.checkNotNull(host, "host property not set.");
-//        Preconditions.checkNotNull(port, "port property not set.");
-//
-//        Preconditions.checkArgument((queueName != null && queueName.length() > 0) ||
-//                        (topicName != null && topicName.length() > 0),
-//                "queueName and topicName all not set.");
+
+        Objects.requireNonNull(protocol, "protocol property not set.");
+        Objects.requireNonNull(host, "host property not set.");
+        Objects.requireNonNull(port, "port property not set.");
+
+        String destinationName = null;
+        if (StringUtils.isNotEmpty(queueName)) {
+            destinationName = queueName;
+        } else if (StringUtils.isNotEmpty(topicName)) {
+            destinationName = topicName;
+        }
+        Objects.requireNonNull(destinationName, "queueName and topicName all not set.");
     }
 
     public String getBrokerUrl() {
