@@ -22,58 +22,49 @@ import javax.jms.Connection;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
+import javax.jms.Message;
 import javax.jms.MessageConsumer;
+import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
 
 import lombok.Cleanup;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQTextMessage;
+import org.junit.Test;
 
 /**
  * Simple ActiveMQ Demo.
  */
 public class ActiveMQDemo {
 
-    public static void main(String[] args) throws JMSException, InterruptedException {
-        ActiveMQDemo demo = new ActiveMQDemo();
-        demo.sendMessage();
-        demo.receiveMessage();
-    }
-
+    @Test
     private void sendMessage() throws JMSException {
 
-        // Create a ConnectionFactory
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 
-        // Create a connection
         @Cleanup
         Connection connection = connectionFactory.createConnection();
         connection.start();
 
-        // Create a session
         @Cleanup
         Session session = connection.createSession(false, Session.CLIENT_ACKNOWLEDGE);
 
-        // Create a destination (Topic or Queue)
         Destination destination = session.createQueue("user-op-queue");
 
-        // Create a MessageProducer from the Session to the Topic or Queue
         @Cleanup
         MessageProducer producer = session.createProducer(destination);
         producer.setDeliveryMode(DeliveryMode.NON_PERSISTENT);
 
-        // Create a messages
         for (int i = 0; i < 10; i++) {
             String msgContent = "Hello ActiveMQ - " + i;
             ActiveMQTextMessage message = new ActiveMQTextMessage();
             message.setText(msgContent);
-
-            // Tell the producer to send the message
             producer.send(message);
         }
     }
 
+    @Test
     private void receiveMessage() throws JMSException, InterruptedException {
 
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
@@ -90,13 +81,19 @@ public class ActiveMQDemo {
         @Cleanup
         MessageConsumer consumer = session.createConsumer(destination);
 
-        while (true) {
-            ActiveMQTextMessage message = (ActiveMQTextMessage) consumer.receive();
-            System.out.println("get message ----------------- ");
-            System.out.println("receive: " + message.getText());
-
-            message.acknowledge();
-        }
+        consumer.setMessageListener(new MessageListener() {
+            @Override
+            public void onMessage(Message message) {
+                if (message instanceof ActiveMQTextMessage) {
+                    try {
+                        System.out.println("get message ----------------- ");
+                        System.out.println("receive: " + ((ActiveMQTextMessage) message).getText());
+                    } catch (JMSException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 
 }
