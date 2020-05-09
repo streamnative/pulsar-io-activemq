@@ -123,10 +123,10 @@ Before using the ActiveMQ source connector, you need to create a configuration f
 
 6. Send ActiveMQ messages.
 
-Use the test method `sendMessage` of the `class org.apache.pulsar.ecosystem.io.activemq.ActiveMQDemo` 
+    Use the test method `sendMessage` of the `class org.apache.pulsar.ecosystem.io.activemq.ActiveMQDemo` 
 to send ActiveMQ messages.
 
-```
+    ```
     @Test
     private void sendMessage() throws JMSException {
     
@@ -152,4 +152,4 @@ to send ActiveMQ messages.
             producer.send(message);
         }
     }
-```
+    ```

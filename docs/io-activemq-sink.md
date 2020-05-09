@@ -128,10 +128,10 @@ Before using the ActiveMQ sink connector, you need to create a configuration fil
 
 6. Consume ActiveMQ messages.
 
-Use the test method `receiveMessage` of the class `org.apache.pulsar.ecosystem.io.activemq.ActiveMQDemo` 
+    Use the test method `receiveMessage` of the class `org.apache.pulsar.ecosystem.io.activemq.ActiveMQDemo` 
 to consume ActiveMQ messages.
 
-```
+    ```
     @Test
     private void receiveMessage() throws JMSException, InterruptedException {
     
@@ -163,4 +163,4 @@ to consume ActiveMQ messages.
             }
         });
     }
-```
+    ```
