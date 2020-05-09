@@ -24,10 +24,10 @@ The ActiveMQ source connector receives messages from ActiveMQ clusters and write
 # Installation
 
 ```
-    git clone https://github.com/streamnative/pulsar-io-activemq.git
-    cd pulsar-io-activemq/
-    mvn clean install -DskipTests
-    cp target/pulsar-io-activemq-0.0.1.nar $PULSAR_HOME/pulsar-io-activemq-0.0.1.nar
+git clone https://github.com/streamnative/pulsar-io-activemq.git
+cd pulsar-io-activemq/
+mvn clean install -DskipTests
+cp target/pulsar-io-activemq-0.0.1.nar $PULSAR_HOME/pulsar-io-activemq-0.0.1.nar
 ```
 
 # Configuration 

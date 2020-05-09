@@ -24,10 +24,10 @@ The ActiveMQ sink connector pulls messages from Pulsar topics and persist messag
 # Installation
 
 ```
-    git clone https://github.com/streamnative/pulsar-io-activemq.git
-    cd pulsar-io-activemq/
-    mvn clean install -DskipTests
-    cp target/pulsar-io-activemq-0.0.1.nar $PULSAR_HOME/pulsar-io-activemq-0.0.1.nar
+git clone https://github.com/streamnative/pulsar-io-activemq.git
+cd pulsar-io-activemq/
+mvn clean install -DskipTests
+cp target/pulsar-io-activemq-0.0.1.nar $PULSAR_HOME/pulsar-io-activemq-0.0.1.nar
 ```
 
 # Configuration 
