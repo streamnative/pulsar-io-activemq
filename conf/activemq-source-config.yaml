@@ -17,11 +17,17 @@
 # under the License.
 #
 
-{
-  "protocol": "tcp",
-  "host": "localhost",
-  "port": "61616",
-  "username": "admin",
-  "password": "admin",
-  "queueName": "user-op-topic"
-}
+tenant: "public"
+namespace: "default"
+name: "activemq-source"
+topicName: "user-op-queue-topic"
+archive: "connectors/pulsar-io-activemq-0.0.1.nar"
+parallelism: 1
+
+configs:
+    protocol: "tcp"
+    host: "localhost"
+    port: "61616"
+    username: "admin"
+    password: "admin"
+    queueName: "user-op-queue"
