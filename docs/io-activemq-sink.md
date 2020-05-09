@@ -23,12 +23,12 @@ The ActiveMQ sink connector pulls messages from Pulsar topics and persist messag
 
 # Installation
 
-    ```
+```
     git clone https://github.com/streamnative/pulsar-io-activemq.git
     cd pulsar-io-activemq/
     mvn clean install -DskipTests
     cp target/pulsar-io-activemq-0.0.1.nar $PULSAR_HOME/pulsar-io-activemq-0.0.1.nar
-    ```
+```
 
 # Configuration 
 
@@ -96,27 +96,32 @@ Before using the ActiveMQ sink connector, you need to create a configuration fil
 # Usage
 
 1. Prepare ActiveMQ service.
+
     ```
     docker pull rmohr/activemq
     docker run -p 61616:61616 -p 8161:8161 rmohr/activemq
     ```
 
 2. Put the `pulsar-io-activemq-0.0.1.nar` in the pulsar connectors catalog.
+
     ```
     cp pulsar-io-activemq-0.0.1.nar $PULSAR_HOME/connectors/pulsar-io-activemq-0.0.1.nar
     ```
 
 3. Start Pulsar in standalone mode.
+
     ```
     $PULSAR_HOME/bin/pulsar standalone
     ```
 
 4. Run ActiveMQ source locally.
+
     ```
     $PULSAR_HOME/bin/pulsar-admin sink localrun --sink-config-file activemq-sink-config.yaml
     ```
 
 5. Send Pulsar messages.
+
     ```
     $PULSAR_HOME/bin/pulsar-client produce public/default/user-op-queue-topic --messages hello -n 10
     ```
@@ -126,7 +131,7 @@ Before using the ActiveMQ sink connector, you need to create a configuration fil
 Use the test method `receiveMessage` of the class `org.apache.pulsar.ecosystem.io.activemq.ActiveMQDemo` 
 to consume ActiveMQ messages.
 
-    ```
+```
     @Test
     private void receiveMessage() throws JMSException, InterruptedException {
     
@@ -158,4 +163,4 @@ to consume ActiveMQ messages.
             }
         });
     }
-    ```
+```

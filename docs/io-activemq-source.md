@@ -23,12 +23,12 @@ The ActiveMQ source connector receives messages from ActiveMQ clusters and write
 
 # Installation
 
-    ```
+```
     git clone https://github.com/streamnative/pulsar-io-activemq.git
     cd pulsar-io-activemq/
     mvn clean install -DskipTests
     cp target/pulsar-io-activemq-0.0.1.nar $PULSAR_HOME/pulsar-io-activemq-0.0.1.nar
-    ```
+```
 
 # Configuration 
 
@@ -91,27 +91,32 @@ Before using the ActiveMQ source connector, you need to create a configuration f
     ```
 
 1. Prepare ActiveMQ service.
+
     ```
     docker pull rmohr/activemq
     docker run -p 61616:61616 -p 8161:8161 rmohr/activemq
     ```
 
 2. Put the `pulsar-io-activemq-0.0.1.nar` in the pulsar connectors catalog.
+
     ```
     cp pulsar-io-activemq-0.0.1.nar $PULSAR_HOME/connectors/pulsar-io-activemq-0.0.1.nar
     ```
 
 3. Start Pulsar in standalone mode.
+
     ```
     $PULSAR_HOME/bin/pulsar standalone
     ```
 
 4. Run ActiveMQ source locally.
+
     ```
     $PULSAR_HOME/bin/pulsar-admin source localrun --source-config-file activemq-source-config.yaml
     ```
 
 5. Consume Pulsar messages.
+
     ```
     bin/pulsar-client consume -s "sub-products" public/default/user-op-queue-topic -n 0
     ```
@@ -121,7 +126,7 @@ Before using the ActiveMQ source connector, you need to create a configuration f
 Use the test method `sendMessage` of the `class org.apache.pulsar.ecosystem.io.activemq.ActiveMQDemo` 
 to send ActiveMQ messages.
 
-    ```
+```
     @Test
     private void sendMessage() throws JMSException {
     
@@ -147,4 +152,4 @@ to send ActiveMQ messages.
             producer.send(message);
         }
     }
-    ```
+```
