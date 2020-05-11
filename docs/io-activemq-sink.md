@@ -114,7 +114,7 @@ Before using the ActiveMQ sink connector, you need to create a configuration fil
     $PULSAR_HOME/bin/pulsar standalone
     ```
 
-4. Run ActiveMQ source locally.
+4. Run ActiveMQ sink locally.
 
     ```
     $PULSAR_HOME/bin/pulsar-admin sink localrun --sink-config-file activemq-sink-config.yaml
