@@ -1,10 +1,10 @@
 ### ActiveMQ Source Doc
 
-see the docs/io-activemq-source.md
+see the [docs/io-activemq-source.md](docs/io-activemq-source.md)
 
 ### ActiveMQ Source Doc
 
-see the docs/io-activemq-sink.md
+see the [docs/io-activemq-sink.md](docs/io-activemq-sink.md)
 
 ### Project Layout
 
