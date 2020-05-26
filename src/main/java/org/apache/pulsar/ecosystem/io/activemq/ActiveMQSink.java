@@ -18,6 +18,8 @@
  */
 package org.apache.pulsar.ecosystem.io.activemq;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.util.Map;
 import javax.jms.Connection;
 import javax.jms.Destination;
@@ -85,7 +87,7 @@ public class ActiveMQSink implements Sink<byte[]> {
             ActiveMQMessage activeMQMessage;
             if (config.getActiveMessageType().equals(ActiveMQTextMessage.class.getSimpleName())) {
                 activeMQMessage = new ActiveMQTextMessage();
-                ((ActiveMQTextMessage) activeMQMessage).setText(new String(record.getValue()));
+                ((ActiveMQTextMessage) activeMQMessage).setText(new String(record.getValue(), UTF_8));
             } else {
                 activeMQMessage = new ActiveMQMessage();
                 activeMQMessage.setContent(new ByteSequence(record.getValue()));
