@@ -18,28 +18,24 @@
  */
 package org.apache.pulsar.ecosystem.io.activemq;
 
+import java.util.concurrent.CountDownLatch;
 import javax.jms.Connection;
 import javax.jms.DeliveryMode;
 import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.Message;
 import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.Session;
-
 import lombok.Cleanup;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.apache.activemq.command.ActiveMQTextMessage;
-import org.junit.Test;
 
 /**
- * Simple ActiveMQ Demo.
+ * Simple ActiveMQ Demo, used for testing validate.
  */
 public class ActiveMQDemo {
 
-    @Test
-    private void sendMessage() throws JMSException {
+    public void sendMessage() throws JMSException {
 
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 
@@ -61,11 +57,11 @@ public class ActiveMQDemo {
             ActiveMQTextMessage message = new ActiveMQTextMessage();
             message.setText(msgContent);
             producer.send(message);
+            System.out.println("send message " + i);
         }
     }
 
-    @Test
-    private void receiveMessage() throws JMSException, InterruptedException {
+    public void receiveMessage() throws JMSException, InterruptedException {
 
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
 
@@ -81,19 +77,19 @@ public class ActiveMQDemo {
         @Cleanup
         MessageConsumer consumer = session.createConsumer(destination);
 
-        consumer.setMessageListener(new MessageListener() {
-            @Override
-            public void onMessage(Message message) {
-                if (message instanceof ActiveMQTextMessage) {
-                    try {
-                        System.out.println("get message ----------------- ");
-                        System.out.println("receive: " + ((ActiveMQTextMessage) message).getText());
-                    } catch (JMSException e) {
-                        e.printStackTrace();
-                    }
+        CountDownLatch countDownLatch = new CountDownLatch(10);
+        consumer.setMessageListener(message -> {
+            if (message instanceof ActiveMQTextMessage) {
+                try {
+                    System.out.println("get message ----------------- ");
+                    System.out.println("receive: " + ((ActiveMQTextMessage) message).getText());
+                } catch (JMSException e) {
+                    e.printStackTrace();
                 }
+                countDownLatch.countDown();
             }
         });
+        countDownLatch.await();
     }
 
 }

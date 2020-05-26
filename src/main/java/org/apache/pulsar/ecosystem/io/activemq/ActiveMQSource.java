@@ -18,6 +18,8 @@
  */
 package org.apache.pulsar.ecosystem.io.activemq;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import java.util.Map;
 import java.util.Optional;
 import javax.jms.Connection;
@@ -99,7 +101,7 @@ public class ActiveMQSource extends PushSource<byte[]> {
             try {
                 if (message instanceof ActiveMQTextMessage) {
                     activeMQSource.consume(new ActiveMQRecord(Optional.empty(),
-                            ((ActiveMQTextMessage) message).getText().getBytes()));
+                            ((ActiveMQTextMessage) message).getText().getBytes(UTF_8)));
                     message.acknowledge();
                 } else if (message instanceof ActiveMQMessage) {
                     activeMQSource.consume(new ActiveMQRecord(Optional.empty(),
