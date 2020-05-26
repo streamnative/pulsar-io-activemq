@@ -58,7 +58,7 @@ Before using the ActiveMQ source connector, you need to create a configuration f
         "namespace": "default",
         "name": "activemq-source",
         "topicName": "user-op-queue-topic",
-        "archive": "connectors/pulsar-io-activemq-0.0.1.nar",
+        "archive": "connectors/pulsar-io-activemq-2.5.1.nar",
         "parallelism": 1,
         "configs": {
             "protocol": "tcp",
@@ -78,7 +78,7 @@ Before using the ActiveMQ source connector, you need to create a configuration f
     namespace: "default"
     name: "activemq-source"
     topicName: "user-op-queue-topic"
-    archive: "connectors/pulsar-io-activemq-0.0.1.nar"
+    archive: "connectors/pulsar-io-activemq-2.5.1.nar"
     parallelism: 1
     
     configs:
@@ -97,10 +97,10 @@ Before using the ActiveMQ source connector, you need to create a configuration f
     docker run -p 61616:61616 -p 8161:8161 rmohr/activemq
     ```
 
-2. Put the `pulsar-io-activemq-0.0.1.nar` in the pulsar connectors catalog.
+2. Put the `pulsar-io-activemq-2.5.1.nar` in the pulsar connectors catalog.
 
     ```
-    cp pulsar-io-activemq-0.0.1.nar $PULSAR_HOME/connectors/pulsar-io-activemq-0.0.1.nar
+    cp pulsar-io-activemq-2.5.1.nar $PULSAR_HOME/connectors/pulsar-io-activemq-2.5.1.nar
     ```
 
 3. Start Pulsar in standalone mode.

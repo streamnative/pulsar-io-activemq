@@ -22,7 +22,7 @@ namespace: "default"
 name: "activemq-sink"
 inputs: 
   - "user-op-queue-topic"
-archive: "connectors/pulsar-io-activemq-0.0.1.nar"
+archive: "connectors/pulsar-io-activemq-2.5.1.nar"
 parallelism: 1
 
 configs:
