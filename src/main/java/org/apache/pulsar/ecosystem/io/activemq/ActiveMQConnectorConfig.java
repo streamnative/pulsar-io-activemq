@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
-
 import lombok.Data;
 import org.apache.activemq.command.ActiveMQTextMessage;
 
