@@ -32,12 +32,14 @@
 
   <groupId>org.apache.pulsar.ecosystem</groupId>
   <artifactId>pulsar-io-activemq</artifactId>
-  <version>2.5.1</version>
+  <version>0.0.1</version>
   <name>Pulsar Ecosystem :: IO Connector :: ActiveMQ Connector</name>
   <description>ActiveMQ source connector and ActiveMQ sink connector.</description>
 
   <properties>
-    <java.version>1.8</java.version>
+    <java.version>17</java.version>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <redirectTestOutputToFile>true</redirectTestOutputToFile>
@@ -45,9 +47,10 @@
     <testRetryCount>2</testRetryCount>
 
     <!-- connector dependencies -->
-    <jackson.version>2.9.10.5</jackson.version>
-    <lombok.version>1.16.22</lombok.version>
-    <pulsar.version>2.5.1</pulsar.version>
+    <jackson.version>2.12.7.1</jackson.version>
+    <lombok.version>1.18.20</lombok.version>
+    <pulsar.version>3.0.1.6</pulsar.version>
+    <activemq.verion>5.15.12</activemq.verion>
 
     <!-- test dependencies -->
     <junit.version>4.13.1</junit.version>
@@ -57,14 +60,12 @@
 
     <!-- build plugin dependencies -->
     <license.plugin.version>3.0</license.plugin.version>
-    <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
-    <maven-compiler-plugin.version>3.7.0</maven-compiler-plugin.version>
-    <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
+    <maven-checkstyle-plugin.version>3.0.0</maven-checkstyle-plugin.version>
+    <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>3.0.0-M3</maven-surefire-plugin.version>
     <nifi.nar.plugin.version>1.2.0</nifi.nar.plugin.version>
-    <puppycrawl.checkstyle.version>8.29</puppycrawl.checkstyle.version>
-    <spotbugs-maven-plugin.version>3.1.8</spotbugs-maven-plugin.version>
-
-    <activemq.verion>5.15.12</activemq.verion>
+    <puppycrawl.checkstyle.version>6.19</puppycrawl.checkstyle.version>
+    <spotbugs-maven-plugin.version>4.2.2</spotbugs-maven-plugin.version>
   </properties>
 
   <licenses>
@@ -79,8 +80,8 @@
   <dependencyManagement>
     <dependencies>
       <dependency>
-        <groupId>org.apache.pulsar</groupId>
-        <artifactId>pulsar-io-core</artifactId>
+        <groupId>io.streamnative</groupId>
+        <artifactId>pulsar-io-common</artifactId>
         <version>${pulsar.version}</version>
       </dependency>
       <dependency>
@@ -150,8 +151,8 @@
 
     <!-- runtime dependencies -->
     <dependency>
-      <groupId>org.apache.pulsar</groupId>
-      <artifactId>pulsar-io-core</artifactId>
+      <groupId>io.streamnative</groupId>
+      <artifactId>pulsar-io-common</artifactId>
     </dependency>
 
     <dependency>
@@ -184,11 +185,6 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
       <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.pulsar</groupId>
-      <artifactId>testmocks</artifactId>
-      <version>${pulsar.version}</version>
     </dependency>
   </dependencies>
 
@@ -303,6 +299,7 @@
           <configuration>
             <configLocation>src/checkstyle/checkstyle.xml</configLocation>
             <suppressionsLocation>src/checkstyle/suppressions.xml</suppressionsLocation>
+            <excludes>**/ProtobufMessage.java</excludes>
             <encoding>UTF-8</encoding>
             <consoleOutput>true</consoleOutput>
             <failOnViolation>true</failOnViolation>
@@ -369,29 +366,5 @@
       </plugin>
     </plugins>
   </build>
-
-  <repositories>
-    <repository>
-      <id>bintray-streamnative-maven</id>
-      <name>bintray</name>
-      <url>https://dl.bintray.com/streamnative/maven</url>
-    </repository>
-
-    <repository>
-      <id>central</id>
-      <layout>default</layout>
-      <url>https://repo1.maven.org/maven2</url>
-    </repository>
-
-    <repository>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-      <id>bintray-yahoo-maven</id>
-      <name>bintray</name>
-      <url>https://yahoo.bintray.com/maven</url>
-    </repository>
-
-  </repositories>
 
 </project>
