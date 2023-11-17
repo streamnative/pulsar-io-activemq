@@ -57,7 +57,7 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <property name="fileNamePattern" value=".*Tests\.java$" />
     </module>
 
-    <!-- Allow use of comment to suppress javadocstyle -->
+
     <module name="SuppressionFilter">
         <property name="file" value="${checkstyle.suppressions.file}" default="suppressions.xml" />
     </module>
@@ -67,7 +67,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     <!-- All Java AST specific tests live under TreeWalker module. -->
     <module name="TreeWalker">
-
         <!-- Allow use of comment to suppress javadocstyle -->
         <module name="SuppressionCommentFilter">
             <property name="offCommentFormat" value="CHECKSTYLE.OFF\: ([\w\|]+)"/>
@@ -95,7 +94,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
         <module name="ImportOrder">
             <property name="severity" value="error"/>
-            <property name="separated" value="true"/>
             <!-- This ensures that static imports go first. -->
             <property name="option" value="top"/>
             <property name="sortStaticImportsAlphabetically" value="true"/>
@@ -151,19 +149,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
         <module name="JavadocMethod">
-            <property name="scope" value="protected"/>
             <property name="severity" value="error"/>
             <property name="allowMissingParamTags" value="true"/>
             <property name="allowMissingReturnTag" value="true"/>
         </module>
 
-        <!-- Check that paragraph tags are used correctly in Javadoc. -->
-        <!-- This module causes all the license comments to fail. -->
-        <!-- TODO: Either leave this commented out (or remove it), or put <p> tags in the license files -->
-        <!-- <module name="JavadocParagraph"/> -->
-
         <module name="JavadocType">
-            <property name="scope" value="protected"/>
             <property name="severity" value="error"/>
             <property name="allowMissingParamTags" value="true"/>
         </module>
@@ -277,12 +268,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
             <property name="format" value="^(((T|K|V|W|X|R)[0-9]*)|([A-Z][a-z][a-zA-Z]*T))$"/>
             <property name="severity" value="error"/>
         </module>
-
-        <!--
-
-        CODING CHECKS
-
-        -->
 
         <module name="LeftCurly">
             <!-- Checks for placement of the left curly brace ('{'). -->
@@ -426,7 +411,12 @@ page at http://checkstyle.sourceforge.net/config.html -->
 
     </module>
 
-    <!-- LENGTH CHECKS -->
+    <!--
+
+        LENGTH and CODING CHECKS
+
+        -->
+
     <module name="LineLength">
         <!-- Checks if a line is too long. -->
         <property name="max" value="120"/>
@@ -439,7 +429,6 @@ page at http://checkstyle.sourceforge.net/config.html -->
         -->
 
         <property name="ignorePattern"
-            value="^(package .*;\s*)|(import .*;\s*)|( *\* .*https?://.*)$"/>
+                  value="^(package .*;\s*)|(import .*;\s*)|( *\* .*https?://.*)$"/>
     </module>
-
 </module>

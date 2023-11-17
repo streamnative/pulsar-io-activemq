@@ -1,22 +1,7 @@
 ---
-description: The ActiveMQ sink connector pulls messages from Pulsar topics and persist messages to ActiveMQ.
-author: ["ASF"]
-contributors: ["ASF"]
-language: Java
-document: 
-source: "https://github.com/streamnative/pulsar-io-activemq/tree/v2.5.1/src/main/java/org/apache/pulsar/ecosystem/io/activemq"
-license: Apache License 2.0
-tags: ["Pulsar IO", "ActiveMQ", "Sink"]
-alias: ActiveMQ Sink
-features: ["Use ActiveMQ sink connector to sync data from Pulsar"]
-license_link: "https://www.apache.org/licenses/LICENSE-2.0"
-icon: "http://activemq.apache.org/assets/img/activemq_logo_black_small.png"
-download: "https://github.com/streamnative/pulsar-io-activemq/releases/download/v2.5.1/pulsar-io-activemq-2.5.1.nar"
-support: StreamNative
-support_link: https://streamnative.io
-support_img: "/images/connectors/streamnative.png"
-dockerfile: 
-id: "io-activemq-sink"
+dockerfile: "https://hub.docker.com/r/streamnative/pulsar-io-activemq"
+download: "https://github.com/streamnative/pulsar-io-activemq/releases"
+alias: ActiveMQ sink connector
 ---
 
 The ActiveMQ sink connector pulls messages from Pulsar topics and persist messages to ActiveMQ.

@@ -19,7 +19,6 @@
 package org.apache.pulsar.ecosystem.io.activemq;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-
 import java.util.Map;
 import java.util.Optional;
 import javax.jms.Connection;
