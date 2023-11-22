@@ -2,11 +2,11 @@
 
 set -ex
 
-echo "Releasing connector AWS EventBridge"
+echo "Releasing connector ActiveMQ"
 
 version=${1#v}
 if [[ "x$version" == "x" ]]; then
-  echo "You need give a version number of the connector AWS EventBridge"
+  echo "You need give a version number of the connector ActiveMQ"
   exit 1
 fi
 
@@ -15,5 +15,5 @@ ASSETS_DIR=release
 mkdir $ASSETS_DIR
 
 mvn clean install -DskipTests
-mv target/pulsar-io-aws-eventbridge-*.nar  ./$ASSETS_DIR
-cp README.md ./$ASSETS_DIR/pulsar-io-aws-eventbridge.md
+mv target/pulsar-io-activemq-*.nar  ./$ASSETS_DIR
+cp README.md ./$ASSETS_DIR/pulsar-io-activemq.md
