@@ -66,12 +66,13 @@ public class ConnectorConfigTest extends ActiveMQConnectorTestBase {
 
     @Test
     public void loadBasicConfigAndCredentialFromSecretForSourceTest() throws IOException {
-        SourceContext sourceContext  = Mockito.mock(SourceContext.class);
+        SourceContext sourceContext = Mockito.mock(SourceContext.class);
         Mockito.when(sourceContext.getSecret("username"))
                 .thenReturn("guest");
         Mockito.when(sourceContext.getSecret("password"))
                 .thenReturn("guest");
-        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(queueConfig, null, sourceContext);
+        ActiveMQConnectorConfig activeMQConnectorConfig =
+                ActiveMQConnectorConfig.load(queueConfig, null, sourceContext);
         activeMQConnectorConfig.validate();
 
         Assert.assertEquals("tcp", activeMQConnectorConfig.getProtocol());
