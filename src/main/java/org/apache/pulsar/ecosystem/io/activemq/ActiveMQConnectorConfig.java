@@ -7,7 +7,7 @@
  * "License"); you may not use this file except in compliance
  * with the License.  You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing,
  * software distributed under the License is distributed on an
@@ -19,6 +19,7 @@
 package org.apache.pulsar.ecosystem.io.activemq;
 
 //import avro.shaded.com.google.common.base.Preconditions;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.Serializable;
@@ -26,6 +27,10 @@ import java.util.Map;
 import java.util.Objects;
 import lombok.Data;
 import org.apache.activemq.command.ActiveMQTextMessage;
+import org.apache.pulsar.io.common.IOConfigUtils;
+import org.apache.pulsar.io.core.SinkContext;
+import org.apache.pulsar.io.core.SourceContext;
+import org.apache.pulsar.io.core.annotations.FieldDoc;
 
 /**
  * ActiveMQ config.
@@ -33,25 +38,57 @@ import org.apache.activemq.command.ActiveMQTextMessage;
 @Data
 public class ActiveMQConnectorConfig implements Serializable {
 
+    @FieldDoc(
+            required = true,
+            defaultValue = "",
+            help = "The ActiveMQ protocol")
     private String protocol;
 
+    @FieldDoc(
+            required = true,
+            defaultValue = "",
+            help = "The ActiveMQ host")
     private String host;
 
+    @FieldDoc(
+            required = true,
+            defaultValue = "",
+            help = "The ActiveMQ port")
     private String port;
 
+    @FieldDoc(
+            sensitive = true,
+            defaultValue = "",
+            help = "The username of ActiveMQ")
     private String username;
 
+    @FieldDoc(
+            sensitive = true,
+            defaultValue = "",
+            help = "The password of ActiveMQ")
     private String password;
 
+    @FieldDoc(
+            defaultValue = "",
+            help = "The queue name of ActiveMQ")
     private String queueName;
 
+    @FieldDoc(
+            defaultValue = "",
+            help = "The topic name of ActiveMQ")
     private String topicName;
 
     private String activeMessageType = ActiveMQTextMessage.class.getSimpleName();
 
-    public static ActiveMQConnectorConfig load(Map<String, Object> map) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new ObjectMapper().writeValueAsString(map), ActiveMQConnectorConfig.class);
+    public static ActiveMQConnectorConfig load(Map<String, Object> map, SinkContext sinkContext,
+                                               SourceContext sourceContext) throws IOException {
+        if (sinkContext != null) {
+            return IOConfigUtils.loadWithSecrets(map, ActiveMQConnectorConfig.class, sinkContext);
+        } else if (sourceContext != null) {
+            return IOConfigUtils.loadWithSecrets(map, ActiveMQConnectorConfig.class, sourceContext);
+        } else {
+            throw new IllegalArgumentException("Either SinkContext or SourceContext must be set.");
+        }
     }
 
     public void validate() {

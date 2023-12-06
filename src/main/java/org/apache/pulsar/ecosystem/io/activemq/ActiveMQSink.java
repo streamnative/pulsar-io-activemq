@@ -53,7 +53,7 @@ public class ActiveMQSink implements Sink<byte[]> {
             throw new IllegalStateException("Connector is already open");
         }
 
-        config = ActiveMQConnectorConfig.load(map);
+        config = ActiveMQConnectorConfig.load(map, sinkContext, null);
         config.validate();
 
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(config.getBrokerUrl());
