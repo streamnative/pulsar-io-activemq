@@ -35,7 +35,7 @@ public class ConnectorConfigTest extends ActiveMQConnectorTestBase {
     @Test
     public void loadBasicConfigTest() throws IOException {
         SinkContext sinkContext = Mockito.mock(SinkContext.class);
-        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(queueConfig, sinkContext, null);
+        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(queueConfig, sinkContext);
         activeMQConnectorConfig.validate();
 
         Assert.assertEquals("tcp", activeMQConnectorConfig.getProtocol());
@@ -53,7 +53,7 @@ public class ConnectorConfigTest extends ActiveMQConnectorTestBase {
                 .thenReturn("guest");
         Mockito.when(sinkContext.getSecret("password"))
                 .thenReturn("guest");
-        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(queueConfig, sinkContext, null);
+        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(queueConfig, sinkContext);
         activeMQConnectorConfig.validate();
 
         Assert.assertEquals("tcp", activeMQConnectorConfig.getProtocol());
@@ -72,7 +72,7 @@ public class ConnectorConfigTest extends ActiveMQConnectorTestBase {
         Mockito.when(sourceContext.getSecret("password"))
                 .thenReturn("guest");
         ActiveMQConnectorConfig activeMQConnectorConfig =
-                ActiveMQConnectorConfig.load(queueConfig, null, sourceContext);
+                ActiveMQConnectorConfig.load(queueConfig, sourceContext);
         activeMQConnectorConfig.validate();
 
         Assert.assertEquals("tcp", activeMQConnectorConfig.getProtocol());
@@ -86,7 +86,7 @@ public class ConnectorConfigTest extends ActiveMQConnectorTestBase {
     @Test
     public void loadQueueConfigTest() throws IOException {
         SinkContext sinkContext = Mockito.mock(SinkContext.class);
-        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(queueConfig, sinkContext, null);
+        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(queueConfig, sinkContext);
         activeMQConnectorConfig.validate();
 
         Assert.assertEquals("test-queue", activeMQConnectorConfig.getQueueName());
@@ -96,7 +96,7 @@ public class ConnectorConfigTest extends ActiveMQConnectorTestBase {
     @Test
     public void loadTopicConfigTest() throws IOException {
         SinkContext sinkContext = Mockito.mock(SinkContext.class);
-        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(topicConfig, sinkContext, null);
+        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(topicConfig, sinkContext);
         activeMQConnectorConfig.validate();
 
         Assert.assertEquals("test-topic", activeMQConnectorConfig.getTopicName());
@@ -106,13 +106,13 @@ public class ConnectorConfigTest extends ActiveMQConnectorTestBase {
     @Test
     public void loadMessageTypeConfig() throws IOException {
         SinkContext sinkContext = Mockito.mock(SinkContext.class);
-        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(topicConfig, sinkContext, null);
+        ActiveMQConnectorConfig activeMQConnectorConfig = ActiveMQConnectorConfig.load(topicConfig, sinkContext);
         activeMQConnectorConfig.validate();
 
         Assert.assertEquals(ActiveMQTextMessage.class.getSimpleName(), activeMQConnectorConfig.getActiveMessageType());
 
         topicConfig.put("activeMessageType", ActiveMQBytesMessage.class.getSimpleName());
-        activeMQConnectorConfig = ActiveMQConnectorConfig.load(topicConfig, sinkContext, null);
+        activeMQConnectorConfig = ActiveMQConnectorConfig.load(topicConfig, sinkContext);
         activeMQConnectorConfig.validate();
 
         Assert.assertEquals(ActiveMQBytesMessage.class.getSimpleName(), activeMQConnectorConfig.getActiveMessageType());

@@ -79,15 +79,12 @@ public class ActiveMQConnectorConfig implements Serializable {
 
     private String activeMessageType = ActiveMQTextMessage.class.getSimpleName();
 
-    public static ActiveMQConnectorConfig load(Map<String, Object> map, SinkContext sinkContext,
-                                               SourceContext sourceContext) throws IOException {
-        if (sinkContext != null) {
-            return IOConfigUtils.loadWithSecrets(map, ActiveMQConnectorConfig.class, sinkContext);
-        } else if (sourceContext != null) {
-            return IOConfigUtils.loadWithSecrets(map, ActiveMQConnectorConfig.class, sourceContext);
-        } else {
-            throw new IllegalArgumentException("Either SinkContext or SourceContext must be set.");
-        }
+    public static ActiveMQConnectorConfig load(Map<String, Object> map, SourceContext sourceContext) throws IOException {
+        return IOConfigUtils.loadWithSecrets(map, ActiveMQConnectorConfig.class, sourceContext);
+    }
+
+    public static ActiveMQConnectorConfig load(Map<String, Object> map, SinkContext sinkContext) throws IOException {
+        return IOConfigUtils.loadWithSecrets(map, ActiveMQConnectorConfig.class, sinkContext);
     }
 
     public void validate() {

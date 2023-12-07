@@ -58,7 +58,7 @@ public class ActiveMQSource extends PushSource<byte[]> {
             throw new IllegalStateException("Connector is already open");
         }
 
-        config = ActiveMQConnectorConfig.load(map, null, sourceContext);
+        config = ActiveMQConnectorConfig.load(map, sourceContext);
         config.validate();
 
         ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory(config.getBrokerUrl());
