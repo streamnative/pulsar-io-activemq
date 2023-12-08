@@ -79,7 +79,8 @@ public class ActiveMQConnectorConfig implements Serializable {
 
     private String activeMessageType = ActiveMQTextMessage.class.getSimpleName();
 
-    public static ActiveMQConnectorConfig load(Map<String, Object> map, SourceContext sourceContext) throws IOException {
+    public static ActiveMQConnectorConfig load(Map<String, Object> map, SourceContext sourceContext)
+            throws IOException {
         return IOConfigUtils.loadWithSecrets(map, ActiveMQConnectorConfig.class, sourceContext);
     }
 
