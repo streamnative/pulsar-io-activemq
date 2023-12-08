@@ -19,13 +19,17 @@
 package org.apache.pulsar.ecosystem.io.activemq;
 
 //import avro.shaded.com.google.common.base.Preconditions;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 import lombok.Data;
 import org.apache.activemq.command.ActiveMQTextMessage;
+import org.apache.pulsar.io.common.IOConfigUtils;
+import org.apache.pulsar.io.core.SinkContext;
+import org.apache.pulsar.io.core.SourceContext;
+import org.apache.pulsar.io.core.annotations.FieldDoc;
 
 /**
  * ActiveMQ config.
@@ -33,25 +37,55 @@ import org.apache.activemq.command.ActiveMQTextMessage;
 @Data
 public class ActiveMQConnectorConfig implements Serializable {
 
+    @FieldDoc(
+            required = true,
+            defaultValue = "",
+            help = "The ActiveMQ protocol")
     private String protocol;
 
+    @FieldDoc(
+            required = true,
+            defaultValue = "",
+            help = "The ActiveMQ host")
     private String host;
 
+    @FieldDoc(
+            required = true,
+            defaultValue = "",
+            help = "The ActiveMQ port")
     private String port;
 
+    @FieldDoc(
+            sensitive = true,
+            defaultValue = "",
+            help = "The username of ActiveMQ")
     private String username;
 
+    @FieldDoc(
+            sensitive = true,
+            defaultValue = "",
+            help = "The password of ActiveMQ")
     private String password;
 
+    @FieldDoc(
+            defaultValue = "",
+            help = "The queue name of ActiveMQ")
     private String queueName;
 
+    @FieldDoc(
+            defaultValue = "",
+            help = "The topic name of ActiveMQ")
     private String topicName;
 
     private String activeMessageType = ActiveMQTextMessage.class.getSimpleName();
 
-    public static ActiveMQConnectorConfig load(Map<String, Object> map) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        return mapper.readValue(new ObjectMapper().writeValueAsString(map), ActiveMQConnectorConfig.class);
+    public static ActiveMQConnectorConfig load(Map<String, Object> map, SourceContext sourceContext)
+            throws IOException {
+        return IOConfigUtils.loadWithSecrets(map, ActiveMQConnectorConfig.class, sourceContext);
+    }
+
+    public static ActiveMQConnectorConfig load(Map<String, Object> map, SinkContext sinkContext) throws IOException {
+        return IOConfigUtils.loadWithSecrets(map, ActiveMQConnectorConfig.class, sinkContext);
     }
 
     public void validate() {
