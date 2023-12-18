@@ -21,16 +21,16 @@ The configuration of the ActiveMQ sink connector has the following properties.
 
 ## ActiveMQ sink connector configuration
 
-| Name | Type|Required | Default | Description 
-|------|----------|----------|---------|-------------|
-| `protocol` |String| true | "tcp" | The ActiveMQ protocol. |
-| `host` | String| true | " " (empty string) | The ActiveMQ host. |
-| `port` | int |true | 5672 | The ActiveMQ port. |
-| `username` | String|false | " " (empty string) | The username used to authenticate to ActiveMQ. |
-| `password` | String|false | " " (empty string) | The password used to authenticate to ActiveMQ. |
-| `queueName` | String|false | " " (empty string) | The ActiveMQ queue name that messages should be read from or written to. |
-| `topicName` | String|false | " " (empty string) | The ActiveMQ topic name that messages should be read from or written to. |
-| `activeMessageType` | String|false |0 | The ActiveMQ message simple class name. |
+| Name                | Type   | Required | Sensitive | Default            | Description                                                              |
+|---------------------|--------|----------|-----------|--------------------|--------------------------------------------------------------------------|
+| `protocol`          | String | true     | false     | "tcp"              | The ActiveMQ protocol.                                                   |
+| `host`              | String | true     | false     | " " (empty string) | The ActiveMQ host.                                                       |
+| `port`              | int    | true     | false     | 5672               | The ActiveMQ port.                                                       |
+| `username`          | String | false    | true      | " " (empty string) | The username used to authenticate to ActiveMQ.                           |
+| `password`          | String | false    | true      | " " (empty string) | The password used to authenticate to ActiveMQ.                           |
+| `queueName`         | String | false    | false     | " " (empty string) | The ActiveMQ queue name that messages should be read from or written to. |
+| `topicName`         | String | false    | false     | " " (empty string) | The ActiveMQ topic name that messages should be read from or written to. |
+| `activeMessageType` | String | false    | false     | 0                  | The ActiveMQ message simple class name.                                  |
 
 ## Configure ActiveMQ sink connector
 
