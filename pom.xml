@@ -50,7 +50,7 @@
     <jackson.version>2.12.7.1</jackson.version>
     <lombok.version>1.18.20</lombok.version>
     <pulsar.version>4.0.1.4</pulsar.version>
-    <activemq.verion>5.15.12</activemq.verion>
+    <activemq.verion>5.16.8</activemq.verion>
 
     <!-- test dependencies -->
     <junit.version>4.13.1</junit.version>
